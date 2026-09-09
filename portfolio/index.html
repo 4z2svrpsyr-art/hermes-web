@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>成果展示 — J 的作品集</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+    .header { padding: 4rem 2rem 2rem; text-align: center; position: relative; overflow: hidden; }
+    .header::before {
+      content: '';
+      position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(99,102,241,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba(139,92,246,0.1) 0%, transparent 50%);
+      z-index: 0;
+    }
+    .header h1 {
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      position: relative; z-index: 1;
+    }
+    .header p { color: #94a3b8; margin-top: 0.5rem; font-size: 1.1rem; position: relative; z-index: 1; }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; justify-content: center; }
+    .filter-btn {
+      padding: 0.5rem 1.2rem; border-radius: 999px; border: 1px solid #334155;
+      background: transparent; color: #94a3b8; cursor: pointer;
+      font-size: 0.9rem; transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover { background: #818cf8; color: white; border-color: #818cf8; }
+    .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem; }
+    .card {
+      background: #1e293b; border-radius: 16px; padding: 2rem;
+      border: 1px solid #334155; transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: #818cf8; }
+    .card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .card h3 { font-size: 1.3rem; color: #f1f5f9; margin-bottom: 0.5rem; }
+    .card p { color: #94a3b8; font-size: 0.95rem; margin-bottom: 1rem; }
+    .card .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .card .tag { font-size: 0.75rem; padding: 0.2rem 0.7rem; border-radius: 999px; background: #334155; color: #cbd5e1; }
+    .card .link { color: #818cf8; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.3rem; }
+    .card .link:hover { text-decoration: underline; }
+    .footer { text-align: center; padding: 3rem; color: #64748b; font-size: 0.85rem; }
+    @media (max-width: 600px) { .header h1 { font-size: 2rem; } .projects { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>&#10022; 作品成果展示</h1>
+    <p>J 的 side project 與實驗作品集 &mdash; 由 Hermes AI 協作開發</p>
+  </div>
+  <div class="container">
+    <div class="filter-bar">
+      <button class="filter-btn active">全部</button>
+      <button class="filter-btn">前端</button>
+      <button class="filter-btn">工具</button>
+      <button class="filter-btn">部署</button>
+    </div>
+    <div class="projects">
+      <div class="card">
+        <div class="card-icon">&#127478;&#65039;</div>
+        <h3>東京七日旅遊規劃書</h3>
+        <p>包含每日行程、交通規劃、預算概算的旅遊手冊頁面。</p>
+        <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">靜態網頁</span></div>
+        <a class="link" href="/travel-plan/">檢視頁面 &rarr;</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#127963;&#65039;</div>
+        <h3>本作品集</h3>
+        <p>暗色主題的作品展示頁面，卡片式佈局與分類篩選。</p>
+        <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">Grid</span></div>
+        <a class="link" href="/portfolio/">檢視頁面 &rarr;</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#128640;</div>
+        <h3>Vercel 自動部署</h3>
+        <p>Git push &rarr; 自動部署到 Vercel，串接 web.vamo.tw 域名。</p>
+        <div class="tags"><span class="tag">Vercel</span><span class="tag">CI/CD</span></div>
+        <a class="link" href="https://github.com/4z2svrpsyr-art/hermes-web">原始碼 &rarr;</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#129302;</div>
+        <h3>Hermes AI 自動化</h3>
+        <p>AI 一句話產生網頁、自動推送部署，完全一鍵完成。</p>
+        <div class="tags"><span class="tag">AI</span><span class="tag">自動化</span></div>
+        <a class="link" href="https://hermes.vamo.tw">了解 Hermes &rarr;</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><p>Made with Hermes AI &middot; 2026</p></div>
+</body>
+</html>
