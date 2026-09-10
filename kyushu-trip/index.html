@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>九州FUN風五日遊 — 2026 員工旅遊</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans TC',sans-serif;background:#0e0e12;color:#e0e0e8;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#1a1a24}
+::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+
+/* Hero */
+.hero{position:relative;height:70vh;min-height:480px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,#0e0e12 0%,#1a1a3e 40%,#0d2b4a 70%,#0e0e12 100%);overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(200,140,50,.08) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(50,150,200,.06) 0%,transparent 50%);pointer-events:none}
+.hero-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.particle{position:absolute;width:3px;height:3px;background:rgba(255,255,255,.15);border-radius:50%;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
+.hero h1{font-size:clamp(2rem,6vw,4.5rem);font-weight:900;background:linear-gradient(135deg,#f6d365,#fda085,#fda085,#f6d365);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.08em;z-index:1;line-height:1.2}
+.hero .subtitle{font-size:clamp(1rem,2vw,1.4rem);color:rgba(255,255,255,.5);margin-top:1rem;letter-spacing:.15em;z-index:1}
+.hero .badge-row{z-index:1;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:1.5rem}
+.badge{padding:6px 18px;border-radius:20px;font-size:.85rem;font-weight:500;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}
+.badge.highlight{border-color:#f6d365;background:rgba(246,211,101,.1);color:#f6d365}
+.badge.price{border-color:#4ecdc4;background:rgba(78,205,196,.1);color:#4ecdc4}
+.scroll-indicator{position:absolute;bottom:30px;z-index:1;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+/* Nav */
+nav{position:sticky;top:0;z-index:100;background:rgba(14,14,18,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);padding:0 16px;overflow-x:auto;white-space:nowrap;display:flex;align-items:center;gap:4px;height:52px}
+nav a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.85rem;padding:6px 14px;border-radius:8px;transition:.2s;flex-shrink:0}
+nav a:hover,nav a.active{color:#fff;background:rgba(255,255,255,.08)}
+
+/* Sections */
+.section{padding:60px 20px;max-width:960px;margin:0 auto}
+.section-title{font-size:1.6rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:12px}
+.section-subtitle{color:rgba(255,255,255,.4);font-size:.95rem;margin-bottom:2rem}
+
+/* Day Cards */
+.day-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;margin-bottom:16px;overflow:hidden;transition:.2s}
+.day-card:hover{border-color:rgba(255,255,255,.12)}
+.day-header{display:flex;align-items:center;padding:18px 20px;cursor:pointer;gap:14px;user-select:none}
+.day-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0}
+.day-num.d1{background:linear-gradient(135deg,#667eea,#764ba2)}
+.day-num.d2{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.day-num.d3{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.day-num.d4{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.day-num.d5{background:linear-gradient(135deg,#fa709a,#fee140)}
+.day-info{flex:1}
+.day-info .day-label{font-weight:600;font-size:1rem}
+.day-info .day-date{color:rgba(255,255,255,.4);font-size:.85rem}
+.day-arrow{color:rgba(255,255,255,.2);font-size:1.2rem;transition:.3s;flex-shrink:0}
+.day-card.open .day-arrow{transform:rotate(180deg)}
+.day-body{display:none;padding:0 20px 20px}
+.day-card.open .day-body{display:block}
+
+/* Timeline inside a day */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:10px;top:8px;bottom:8px;width:2px;background:rgba(255,255,255,.08)}
+.tl-item{position:relative;padding:8px 0}
+.tl-dot{position:absolute;left:-24px;top:14px;width:12px;height:12px;border-radius:50%;border:2px solid;background:#0e0e12;z-index:1}
+.tl-dot.blue{border-color:#4facfe}
+.tl-dot.green{border-color:#43e97b}
+.tl-dot.orange{border-color:#f6d365}
+.tl-dot.pink{border-color:#fa709a}
+.tl-dot.purple{border-color:#a78bfa}
+.tl-time{font-size:.8rem;color:rgba(255,255,255,.35);font-weight:500}
+.tl-title{font-weight:600;font-size:.95rem;margin-top:2px}
+.tl-desc{font-size:.85rem;color:rgba(255,255,255,.5);margin-top:4px;line-height:1.5}
+.tl-loc{font-size:.78rem;color:rgba(255,255,255,.3);margin-top:3px;display:flex;align-items:center;gap:4px}
+
+/* Flight Cards */
+.flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.flight-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px}
+.flight-card .airline{font-size:.8rem;color:rgba(255,255,255,.35)}
+.flight-card .flight-no{font-size:1.3rem;font-weight:700;margin:4px 0}
+.flight-card .route{font-size:.9rem;color:rgba(255,255,255,.5)}
+.flight-card .time-row{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)}
+.flight-card .time-item .label{font-size:.7rem;text-transform:uppercase;color:rgba(255,255,255,.3);letter-spacing:.1em}
+.flight-card .time-item .value{font-size:1rem;font-weight:600;margin-top:2px}
+
+/* Hotel Grid */
+.hotel-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hotel-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px}
+.hotel-card .h-name{font-weight:600;font-size:1rem}
+.hotel-card .h-date{font-size:.8rem;color:rgba(255,255,255,.35);margin-top:2px}
+.hotel-card .h-addr{font-size:.82rem;color:rgba(255,255,255,.4);margin-top:6px}
+.hotel-card .h-tag{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:6px;font-size:.75rem;background:rgba(78,205,196,.1);color:#4ecdc4;border:1px solid rgba(78,205,196,.2)}
+
+/* AB Route Compare */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.compare-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden}
+.compare-card .c-head{padding:14px 18px;font-weight:700;font-size:1.1rem}
+.compare-card .c-head.a{background:linear-gradient(135deg,rgba(79,172,254,.15),rgba(0,242,254,.05));border-bottom:1px solid rgba(79,172,254,.15)}
+.compare-card .c-head.b{background:linear-gradient(135deg,rgba(250,112,154,.15),rgba(254,225,64,.05));border-bottom:1px solid rgba(250,112,154,.15)}
+.compare-card .c-body{padding:14px 18px}
+.compare-card .c-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.compare-card .c-item:last-child{border:none}
+.c-time{font-size:.82rem;color:rgba(255,255,255,.35)}
+.c-detail{font-size:.9rem}
+
+/* Pricing */
+.pricing-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px}
+.price-table{width:100%;border-collapse:collapse;margin-top:16px}
+.price-table th,.price-table td{padding:12px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.04)}
+.price-table th{background:rgba(255,255,255,.03);font-weight:500;font-size:.85rem;color:rgba(255,255,255,.5)}
+.price-table td{font-size:.9rem}
+.price-table .amount{font-weight:700;text-align:right;white-space:nowrap}
+.price-highlight{background:rgba(246,211,101,.05)}
+.price-section{margin-top:24px}
+.price-section h4{font-size:.95rem;font-weight:600;margin-bottom:8px;color:#f6d365}
+.price-section ul{list-style:none;padding:0}
+.price-section li{padding:6px 0;font-size:.88rem;color:rgba(255,255,255,.6);padding-left:20px;position:relative}
+.price-section li::before{content:'•';position:absolute;left:4px;color:rgba(255,255,255,.2)}
+
+/* Overlay Notes */
+.note-box{background:rgba(246,211,101,.04);border:1px solid rgba(246,211,101,.12);border-radius:12px;padding:18px;margin-top:16px;font-size:.88rem;color:rgba(255,255,255,.6)}
+.note-box strong{color:#f6d365}
+
+/* Footer */
+footer{text-align:center;padding:40px 20px;color:rgba(255,255,255,.25);font-size:.8rem}
+
+/* Responsive */
+@media(max-width:640px){
+  .flight-grid,.hotel-grid,.compare-grid{grid-template-columns:1fr}
+  .section{padding:40px 16px}
+  .hero{height:60vh;min-height:360px}
+  .day-header{padding:14px 16px}
+  .day-body{padding:0 16px 14px}
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero" id="top">
+  <div class="hero-particles" id="particles"></div>
+  <h1>九州FUN風五日遊</h1>
+  <div class="subtitle">2026 NextFortune 員工旅遊</div>
+  <div class="badge-row">
+    <span class="badge">第四梯：10/14(三) → 10/18(日)</span>
+    <span class="badge">✈️ CI116 → CI117</span>
+    <span class="badge highlight">NT$37,500/人</span>
+  </div>
+  <div class="scroll-indicator">↓</div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a href="#overview" class="active">總覽</a>
+  <a href="#day1">Day1</a>
+  <a href="#day2">Day2</a>
+  <a href="#day3">Day3</a>
+  <a href="#day4">Day4</a>
+  <a href="#day5">Day5</a>
+  <a href="#flights">航班</a>
+  <a href="#hotels">飯店</a>
+  <a href="#pricing">費用</a>
+</nav>
+
+<!-- Overview -->
+<div class="section" id="overview">
+  <h2 class="section-title">🗺️ 行程總覽</h2>
+  <p class="section-subtitle">2026 年九州風光五日遊・第四梯 10/14(三)～10/18(日)</p>
+  
+  <div class="day-card open">
+    <div class="day-header">
+      <span class="day-num d1">1</span>
+      <div class="day-info"><div class="day-label">10/14 (三) — 桃園→福岡・夜訪天神</div></div>
+    </div>
+    <div class="day-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-time">14:00</div><div class="tl-title">桃園機場第二航廈 Check-in</div><div class="tl-desc">中華航空 CI116 櫃檯報到，建議提前 2.5 小時到機場</div><div class="tl-loc">📍 桃園市大園區航站南路9號</div></div>
+        <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-time">16:40→20:00</div><div class="tl-title">✈️ CI116 桃園→福岡</div><div class="tl-desc">飛行 2h20m・機上餐食</div></div>
+        <div class="tl-item"><div class="tl-dot green"></div><div class="tl-time">20:00→20:30</div><div class="tl-title">🚌 福岡空港→飯店</div><div class="tl-desc">團體巴士接駁，車程約 20 分</div></div>
+        <div class="tl-item"><div class="tl-dot purple"></div><div class="tl-time">20:30~23:00</div><div class="tl-title">🌃 自由夜訪福岡</div><div class="tl-desc">天神商圈・中洲屋台街・博多運河城</div></div>
+        <div class="tl-item"><div class="tl-dot pink"></div><div class="tl-time">住宿</div><div class="tl-title">🏨 福岡蒙特埃馬納酒店</div><div class="tl-loc">📍 福岡市中央區天神3-6-15</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card open">
+    <div class="day-header">
+      <span class="day-num d2">2</span>
+      <div class="day-info"><div class="day-label">10/15 (四) — 柳川・熊本・阿蘇</div></div>
+    </div>
+    <div class="day-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-time">07:00~08:00</div><div class="tl-title">🚌 福岡→柳川（1h）</div></div>
+        <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-time">08:00~10:00</div><div class="tl-title">🚣 柳川遊船</div><div class="tl-desc">世界聞名水鄉・船夫搖櫓哼歌・船程約 70 分</div><div class="tl-loc">📍 福岡縣柳川市城町</div></div>
+        <div class="tl-item"><div class="tl-dot green"></div><div class="tl-time">10:00~11:30</div><div class="tl-title">🍚 柳川鰻魚飯</div><div class="tl-desc">柳川名物・400 年歷史蒸籠鰻魚飯</div></div>
+        <div class="tl-item"><div class="tl-dot purple"></div><div class="tl-time">11:30~13:00</div><div class="tl-title">🚌 柳川→熊本城（1.5h）</div></div>
+        <div class="tl-item"><div class="tl-dot pink"></div><div class="tl-time">13:00~15:00</div><div class="tl-title">🏯 熊本城（上天守閣）</div><div class="tl-desc">日本三大名城之一・天守閣俯瞰熊本市區</div><div class="tl-loc">📍 熊本市中央區本丸1-1</div></div>
+        <div class="tl-item"><div class="tl-dot purple"></div><div class="tl-time">15:00~16:00</div><div class="tl-title">🌸 櫻之馬場城彩苑</div><div class="tl-desc">17 世紀城下町・馬肉刺身・芥末蓮藕</div></div>
+        <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-time">16:00~17:00</div><div class="tl-title">🚌 熊本→大觀峰（1h）</div></div>
+        <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-time">17:00~18:00</div><div class="tl-title">⛰️ 大觀峰展望台</div><div class="tl-desc">海拔 936m・遠眺阿蘇五嶽・夕陽熱點</div><div class="tl-loc">📍 阿蘇市一之宮町宮地</div></div>
+        <div class="tl-item"><div class="tl-dot pink"></div><div class="tl-time">住宿</div><div class="tl-title">🏨 龜之井阿蘇公園度假村（♨️ 溫泉）</div><div class="tl-loc">📍 熊本縣阿蘇市黑川1239</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card open">
+    <div class="day-header">
+      <span class="day-num d3">3</span>
+      <div class="day-info"><div class="day-label">10/16 (五) — 草千里・由布院・童話村</div></div>
+    </div>
+    <div class="day-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-time">07:30~08:00</div><div class="tl-title">🚌 飯店→草千里（15 分）</div></div>
+        <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-time">08:00~10:00</div><div class="tl-title">🌿 草千里之濱</div><div class="tl-desc">78.5 萬平方公尺大草原・騎馬體驗（4~11月限定）</div><div class="tl-loc">📍 阿蘇市黑川（火山博物館旁）</div></div>
+        <div class="tl-item"><div class="tl-dot purple"></div><div class="tl-time">10:00~12:00</div><div class="tl-title">🚌 阿蘇→由布院（2h）</div></div>
+        <div class="tl-item"><div class="tl-dot green"></div><div class="tl-time">12:00~12:30</div><div class="tl-title">🍚 由布院日式風味餐</div></div>
+        <div class="tl-item"><div class="tl-dot pink"></div><div class="tl-time">12:30~13:30</div><div class="tl-title">🏞️ 由布院・金鱗湖散策</div><div class="tl-desc">湖面如金色魚鱗・地下溫泉湧入・贈送 Milch 布丁・天祖神社水上鳥居</div></div>
+        <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-time">13:30~16:00</div><div class="tl-title">🎠 湯布院世界童話村</div><div class="tl-desc">Miffy 森林小屋・史努比咖啡廳・宮崎駿周邊・湯之坪街道</div><div class="tl-loc">📍 大分縣由布市湯布院町川上2990</div></div>
+        <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-time">16:00~17:30</div><div class="tl-title">🚌 由布院→福岡（2h）</div></div>
+        <div class="tl-item"><div class="tl-dot green"></div><div class="tl-time">17:30~19:30</div><div class="tl-title">🥩 燒肉吃到飽（含酒水暢飲）</div></div>
+        <div class="tl-item"><div class="tl-dot pink"></div><div class="tl-time">住宿</div><div class="tl-title">🏨 福岡王子大飯店百道濱</div><div class="tl-loc">📍 福岡市博多區百道浜2-1-1</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card open">
+    <div class="day-header">
+      <span class="day-num d4">4</span>
+      <div class="day-info"><div class="day-label">10/17 (六) — 全日自由活動</div></div>
+    </div>
+    <div class="day-body">
+      <div class="note-box">
+        <strong>🍽️</strong> 早餐：飯店內（含）｜午餐自理｜晚餐自理<br>
+        <strong>🎯</strong> 自由探索福岡 — 一天屬於你的冒險！
+      </div>
+      <div class="timeline" style="margin-top:16px">
+        <div class="tl-item"><div class="tl-dot purple"></div><div class="tl-title">🅰️ 太宰府天滿宮</div><div class="tl-desc">學問之神菅原道真・千株梅樹・西鐵 30 分</div><div class="tl-loc">📍 太宰府市宰府4-7-1</div></div>
+        <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title">🅱️ 博多運河城</div><div class="tl-desc">大型購物中心・美食娛樂・地鐵 15 分</div><div class="tl-loc">📍 博多區住吉1-2</div></div>
+        <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">🎯 天神地下街</div><div class="tl-desc">1.2km 地下商圈・飯店步行 20 分</div></div>
+        <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">📍 福岡塔</div><div class="tl-desc">飯店步行 5 分・海濱景觀塔</div></div>
+        <div class="tl-item"><div class="tl-dot pink"></div><div class="tl-title">🌙 中洲屋台街</div><div class="tl-desc">夜晚限定・路邊攤・豚骨拉麵</div></div>
+      </div>
+      <div style="margin-top:12px;font-size:.82rem;color:rgba(255,255,255,.35)">🎫 建議購買福岡地鐵 1 日券 ¥640</div>
+    </div>
+  </div>
+
+  <div class="day-card open">
+    <div class="day-header">
+      <span class="day-num d5">5</span>
+      <div class="day-info"><div class="day-label">10/18 (日) — 雙路線選擇・回台</div></div>
+    </div>
+    <div class="day-body">
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="c-head a">🅰️ A 路線：自由＋購物</div>
+          <div class="c-body">
+            <div class="c-item"><span class="c-time">08:00~13:00</span><span class="c-detail">自由活動／最後採購</span></div>
+            <div class="c-item"><span class="c-time">13:00~14:00</span><span class="c-detail">🛍️ 免稅店</span></div>
+            <div class="c-item"><span class="c-time">14:00~15:00</span><span class="c-detail">🍽️ 發代金 ¥2,500</span></div>
+            <div class="c-item"><span class="c-time">15:30~17:00</span><span class="c-detail">🚌 前往機場</span></div>
+            <div class="c-item"><span class="c-time">21:00</span><span class="c-detail">✈️ CI117 起飛</span></div>
+          </div>
+        </div>
+        <div class="compare-card">
+          <div class="c-head b">🅱️ B 路線：文化巡禮</div>
+          <div class="c-body">
+            <div class="c-item"><span class="c-time">08:00~09:00</span><span class="c-detail">🚌 前往太宰府（40 分）</span></div>
+            <div class="c-item"><span class="c-time">09:00~10:30</span><span class="c-detail">🏛️ 太宰府天滿宮 🎁 梅枝餅</span></div>
+            <div class="c-item"><span class="c-time">10:30~11:15</span><span class="c-detail">🚌 → 櫛田神社（20 分）</span></div>
+            <div class="c-item"><span class="c-time">11:15~12:15</span><span class="c-detail">⛩️ 櫛田神社</span></div>
+            <div class="c-item"><span class="c-time">12:15~12:30</span><span class="c-detail">🚌 → LaLaport</span></div>
+            <div class="c-item"><span class="c-time">12:30~14:00</span><span class="c-detail">🛍️ LaLaport 🍽️ ¥2,500</span></div>
+            <div class="c-item"><span class="c-time">14:00~15:30</span><span class="c-detail">🛍️ 免稅店（會合）</span></div>
+            <div class="c-item"><span class="c-time">21:00</span><span class="c-detail">✈️ CI117 起飛</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="note-box" style="margin-top:16px">
+        🍽️ 晚餐：發代金 ¥2,000 + 機上餐食<br>
+        ✈️ CI117 21:00 福岡起飛 → 22:30 桃園到着
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Flights -->
+<div class="section" id="flights">
+  <h2 class="section-title">✈️ 航班資訊</h2>
+  <p class="section-subtitle">中華航空・桃園 ⇄ 福岡</p>
+  <div class="flight-grid">
+    <div class="flight-card">
+      <div class="airline">中華航空</div>
+      <div class="flight-no">CI116</div>
+      <div class="route">TPE → FUK（桃園→福岡）</div>
+      <div class="time-row">
+        <div class="time-item"><div class="label">出發</div><div class="value">10/14 16:40</div></div>
+        <div class="time-item" style="text-align:right"><div class="label">抵達</div><div class="value">10/14 20:00</div></div>
+      </div>
+    </div>
+    <div class="flight-card">
+      <div class="airline">中華航空</div>
+      <div class="flight-no">CI117</div>
+      <div class="route">FUK → TPE（福岡→桃園）</div>
+      <div class="time-row">
+        <div class="time-item"><div class="label">出發</div><div class="value">10/18 21:00</div></div>
+        <div class="time-item" style="text-align:right"><div class="label">抵達</div><div class="value">10/18 22:30</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hotels -->
+<div class="section" id="hotels">
+  <h2 class="section-title">🏨 住宿飯店</h2>
+  <p class="section-subtitle">兩人一室・含飯店早餐</p>
+  <div class="hotel-grid">
+    <div class="hotel-card">
+      <div class="h-name">福岡蒙特埃馬納酒店</div>
+      <div class="h-date">📅 10/14 一晚</div>
+      <div class="h-addr">📍 福岡市中央區天神3-6-15（天神站徒步3分）</div>
+      <span class="h-tag">市區商務</span>
+    </div>
+    <div class="hotel-card">
+      <div class="h-name">龜之井阿蘇公園度假村</div>
+      <div class="h-date">📅 10/15 一晚</div>
+      <div class="h-addr">📍 熊本縣阿蘇市黑川1239（阿蘇九重國立公園內）</div>
+      <span class="h-tag">♨️ 溫泉</span>
+    </div>
+    <div class="hotel-card">
+      <div class="h-name">福岡王子大飯店百道濱</div>
+      <div class="h-date">📅 10/16 + 10/17 兩晚</div>
+      <div class="h-addr">📍 福岡市博多區百道浜2-1-1（福岡塔旁）</div>
+      <span class="h-tag">海濱飯店</span>
+    </div>
+  </div>
+</div>
+
+<!-- Pricing -->
+<div class="section" id="pricing">
+  <h2 class="section-title">💰 團費報價</h2>
+  <p class="section-subtitle">2026 年・第四梯（10/14）</p>
+  <div class="pricing-box">
+    <table class="price-table">
+      <tr><th>類別</th><th>價格</th></tr>
+      <tr class="price-highlight"><td>👤 大人、2~11 歲小孩佔床</td><td class="amount">NT$37,500</td></tr>
+      <tr><td>👶 2~11 歲小孩不佔床（含餐食、含機位）</td><td class="amount">NT$32,500</td></tr>
+      <tr><td>👶 2 歲以下嬰兒（不含餐床、含機位）</td><td class="amount">NT$6,500</td></tr>
+    </table>
+    <div class="price-section">
+      <h4>✅ 費用包含</h4>
+      <ul>
+        <li>全程經濟艙往返機票（含機場稅燃料稅）</li>
+        <li>住宿：行程表所列，兩人一室</li>
+        <li>餐食：酒店內早餐；午晚餐如行程表</li>
+        <li>交通：當地合法巴士</li>
+        <li>每車台灣領隊一位</li>
+        <li>旅遊責任險 500 萬 + 20 萬意外醫療 + 1.16 億履約責任險</li>
+        <li>全程司機領隊小費 NT$300/天 × 5 = NT$1,500</li>
+        <li>公司到桃園機場來回接送</li>
+        <li>🎁 每人一張吃到飽網卡 + 行李束帶 + 行李吊牌 + 精美手冊</li>
+      </ul>
+    </div>
+    <div class="price-section">
+      <h4>❌ 費用不含</h4>
+      <ul>
+        <li>行程外自費項目（房間服務、飲料、酒水等）</li>
+        <li>升等房型（依需求報價）</li>
+        <li>單人房差 NT$13,500</li>
+        <li>升等商務艙</li>
+      </ul>
+    </div>
+    <div class="note-box">
+      <strong>📌 備註</strong><br>
+      • 訂金 NT$10,000/位，並提供護照資訊<br>
+      • 此報價為 25 人/車以上團體報價，不足人數須重新報價<br>
+      • 正確航班時間依行前說明資料為主<br>
+      • 護照代辦費：大人 NT$1,700 / 14 歲以下 NT$1,300
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 NextFortune 員工旅遊 · 第四梯 10/14～10/18 · 九州 FUN 風五日遊</footer>
+
+<script>
+// Particles
+const pContainer = document.getElementById('particles');
+for(let i=0;i<40;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  p.style.left=Math.random()*100+'%';
+  p.style.animationDuration=15+Math.random()*25+'s';
+  p.style.animationDelay=Math.random()*15+'s';
+  p.style.width=p.style.height=1+Math.random()*3+'px';
+  pContainer.appendChild(p);
+}
+
+// Nav highlight on scroll
+const links=document.querySelectorAll('nav a');
+const sections=document.querySelectorAll('.section,.hero');
+window.addEventListener('scroll',()=>{
+  const scrollY=window.scrollY+80;
+  let idx=0;
+  sections.forEach((s,i)=>{if(s.offsetTop<=scrollY)idx=i});
+  links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+sections[idx].id));
+});
+
+// Day card toggle
+document.querySelectorAll('.day-card').forEach(c=>{
+  c.querySelector('.day-header').addEventListener('click',()=>c.classList.toggle('open'));
+});
+</script>
+</body>
+</html>
